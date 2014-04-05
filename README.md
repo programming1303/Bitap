@@ -1,0 +1,4 @@
+Bitap
+=====
+
+Fuzzy Bitap algorithm.
