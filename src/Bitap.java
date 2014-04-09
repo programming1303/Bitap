@@ -12,43 +12,26 @@ public class Bitap
     public static void search(String text, String pattern)
     {
         int length = pattern.length();
-        boolean[] M = new boolean[length+1];
-        boolean[] I = new boolean[length+1];
-        boolean[] D = new boolean[length+1];
-        boolean[] R = new boolean[length+1];
 
-        M[0] = true;
-        R[0] = true;
-        I[0] = false;
-        D[0] = true;
+        long D,R, I,M ;
+
+        M = ~1;
+        R = ~1;
+        I = ~0;
+        D = ~1;
         int i;
-        for(i = 1; i < length+1; i++)
-        {
-            M[i] = false;
-            R[i] = false;
-            I[i] = false;
-            D[i] = false;
-        }
-        D[1] = true;
-        int k;
+        //создание маски!!!
         for(i = 0; i < text.length(); i++)
         {
-            for(k = length; k >= 1; k--)
-                I[k] = M[k] | ((text.charAt(i) == pattern.charAt(k-1)) & I[k - 1]);
-            for(k = length; k >= 1; k--)
-                M[k] = M[k - 1] & (text.charAt(i) == pattern.charAt(k-1));
-            for(k = length; k >= 1; k--)
-                R[k] = M[k - 1] | (R[k - 1] & (text.charAt(i) == pattern.charAt(k-1)));
-            for(k = length; k >= 1; k--)
-                D[k] = M[k - 1] | ((text.charAt(i) == pattern.charAt(k-1)) & D[k - 1]);
-            if(M[length])
+                M |= pattern_mask[text[i]];
+                M <<= 1;
+                I &= M | (pattern_mask[text[i]]);
+                I <<= 1;
+                R &= M | (pattern_mask[text[i]]);
+                R<<=1;
+                D &= M | (pattern_mask[text[i]]);
+                D<<=1;
                 System.out.println("Full Match " + (i - length + 1));
-            if(D[length])
-                System.out.println("Deletion " + (i - length + 2));
-            if(R[length])
-                System.out.println("Replication " + (i - length + 2));
-            if(I[length])
-                System.out.println("Insertion " + (i - length));
         }
     }
 }
