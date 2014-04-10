@@ -2,8 +2,8 @@ public class Bitap
 {
     public static void main(String args[])
     {
-        String text = "CTC";
-        String pattern = "CTG";
+        String text = args[0];
+        String pattern = args[1];
         System.out.println("Text: " + text);
         System.out.println("Pattern: "+ pattern);
         search(text, pattern);
