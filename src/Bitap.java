@@ -2,8 +2,8 @@ public class Bitap
 {
     public static void main(String args[])
     {
-        String text = "SeregaLoh";
-        String pattern = "Serega";
+        String text = "ATCGAGCATCGA";
+        String pattern = "ATCGA";
         System.out.println("Text: " + text);
         System.out.println("Pattern: "+ pattern);
         search(text, pattern);
@@ -11,26 +11,27 @@ public class Bitap
 
     public static void search(String text, String pattern)
     {
-        int length = pattern.length();
+        int length = pattern.length() - 1;
 
-        long D,R, I,M ;
+        long M = 1, vector[] = new long[256];
+        int i, k;
 
-        M = ~1;
-        R = ~1;
-        I = ~0;
-        D = ~1;
-        int i;
-        //создание маски!!!
+        for(k = 0; k < 256; k++)
+        {
+            for (i = length; i >= 0; i--)
+            {
+                vector[k] |= (pattern.charAt(i) == k) ? 1 : 0;
+                vector[k] <<= 1;
+            }
+            vector[k] |= 1;
+        }
+
         for(i = 0; i < text.length(); i++)
         {
-                M |= pattern_mask[text[i]];
-                M <<= 1;
-                I &= M | (pattern_mask[text[i]]);
-                I <<= 1;
-                R &= M | (pattern_mask[text[i]]);
-                R<<=1;
-                D &= M | (pattern_mask[text[i]]);
-                D<<=1;
+            M <<= 1;
+            M |= 1;
+            M &= vector[text.charAt(i)];
+            if(M >= Math.pow(2, length + 1))
                 System.out.println("Full Match " + (i - length + 1));
         }
     }
